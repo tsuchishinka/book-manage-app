@@ -1,11 +1,5 @@
-from enum import Enum
-
+from auth_service.model.role import Role
 from pydantic import BaseModel
-
-
-class Role(Enum):
-    USER = 1
-    ADMIN = 2
 
 
 class User(BaseModel):

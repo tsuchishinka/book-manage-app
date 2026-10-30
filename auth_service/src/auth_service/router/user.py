@@ -1,17 +1,18 @@
 from typing import Annotated
 
-from auth_service.src.auth_service.schema.user import (
-    UserPatchIn,
-    UserPatchOut,
-    UserPostIn,
-    UserPostOut,
-)
 from auth_service.cruds.user import insert_user
 from auth_service.cruds.user import update_user as update_user_record
 from auth_service.model.user import Role, User
 from auth_service.service.auth import REQUIRED_ROLE_KEY, AuthClient, verify_role
 from auth_service.service.user import is_exist_mail_address, is_exist_user
 from fastapi import APIRouter, Body, Depends, HTTPException
+
+from auth_service.src.auth_service.schema.user import (
+    UserPatchIn,
+    UserPatchOut,
+    UserPostIn,
+    UserPostOut,
+)
 
 router = APIRouter()
 
@@ -36,7 +37,7 @@ async def create_user(params: Annotated[UserPostIn, Body()]):
     "/user/{user_id}",
     summary="ユーザー情報更新",
     response_model=UserPatchOut,
-    openapi_extra={REQUIRED_ROLE_KEY: Role.ADMIN},
+    openapi_extra={REQUIRED_ROLE_KEY: [Role.USER]},
 )
 async def update_user(
     user_id: int,

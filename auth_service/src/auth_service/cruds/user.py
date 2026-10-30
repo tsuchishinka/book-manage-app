@@ -1,4 +1,5 @@
 from auth_service.model.user import User
+from auth_service.service.database import Database
 
 
 def insert_user(user: User):
@@ -7,7 +8,16 @@ def insert_user(user: User):
     return user_id
 
 
-def update_user(user: User):
+def update_user(database: Database, user: User):
+    with database.transaction():
+        conn.execute(
+            f"""
+            UPDATE `user` 
+                SET `name` = {user.name}, `mail_address` = {user.mail_address}, `password` = {user.password_hashed}, `role_id` = {user.role_id}
+                WHERE `user_id` = {user.user_id}
+            """
+        )
+
     return user
 
 
